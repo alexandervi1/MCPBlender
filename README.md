@@ -1,15 +1,15 @@
 # blender-ai-mcp
 
-`blender-ai-mcp` is a local Model Context Protocol server and Blender addon bridge for AI-assisted 3D modeling workflows.
+`blender-ai-mcp` is a local Model Context Protocol server plus Blender addon bridge for AI-assisted 3D workflows.
 
-The MCP server runs outside Blender and communicates with the Blender addon over a localhost newline-delimited JSON socket. It exposes tools for scene inspection, object creation, materials, cameras, lighting, rendering, animation, import/export, quality checks, and controlled Blender Python execution.
+It lets an MCP client inspect the live Blender scene and perform controlled operations on objects, materials, cameras, lights, render settings, animation, UVs, Geometry Nodes, imports, exports, and Python execution.
 
-## Features
+## What Is Included
 
-- Local MCP server for Claude Desktop or another MCP-compatible client.
-- Blender addon bridge over `localhost:9876`.
-- Tools for objects, materials, cameras, lights, rendering, animation, UVs, Geometry Nodes, imports, exports, and scripted Blender operations.
-- Higher-level modeling helpers for hard-surface assets, reference-guided modeling, quality validation, and low-poly asset pipelines.
+- `server/`: Python MCP server and tool registry.
+- `blender_addon/`: Blender addon that receives commands from the local bridge.
+- `blender_ai_mcp/`: package entry points for MCP clients.
+- `docs/`: setup, tool reference, and AI usage notes.
 
 ## Requirements
 
@@ -17,19 +17,31 @@ The MCP server runs outside Blender and communicates with the Blender addon over
 - Python 3.10 or newer.
 - Claude Desktop or another MCP-compatible client.
 
-## Installation
+## Quick Start
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
+1. Create and activate a virtual environment.
 
-Install and enable the Blender addon from `blender_addon/`, then start the **AI MCP Bridge** server from Blender's 3D Viewport sidebar.
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   pip install -r requirements.txt
+   ```
 
-## MCP Configuration
+2. Install the addon from `blender_addon/`.
 
-Use `mcp_config_example.json` as a starting point:
+   In Blender, open `Edit > Preferences > Add-ons > Install...`, select `blender_addon/__init__.py`, and enable **AI MCP Bridge**.
+
+3. Start the addon server in Blender.
+
+   In the 3D Viewport sidebar, open the **AI MCP** panel, confirm port `9876`, and click **Start Server**.
+
+4. Configure your MCP client using `mcp_config_example.json`.
+
+5. Restart the client and confirm the `blender` server is available.
+
+## MCP Config
+
+Example:
 
 ```json
 {
@@ -46,22 +58,41 @@ Use `mcp_config_example.json` as a starting point:
 }
 ```
 
-If you use a virtual environment, set `command` to that environment's Python executable.
+If you use a project virtual environment, set `command` to that environment's Python executable.
 
-## Development
+## Typical Workflow
+
+1. Inspect the live scene with `get_scene_info` and `list_objects`.
+2. Create or reuse the target object.
+3. Fix the origin if `location` and `bounding_box_center` do not match.
+4. Position, align, and duplicate objects using the layout tools.
+5. Apply materials and modifiers.
+6. Validate overlaps, scale, and scene quality.
+7. Render a viewport preview before reporting the task done.
+
+## Validation
+
+Run the test suite after code changes:
 
 ```powershell
-pip install -e ".[dev]"
 pytest
-ruff check .
 ```
 
-More documentation is available in `docs/`:
+Useful checks:
 
-- `docs/SETUP.md`
-- `docs/TOOLS.md`
-- `docs/AI_README.md`
+- `ruff check .`
+- `uv run --extra dev pytest tests`
+
+## Documentation
+
+- [Setup guide](docs/SETUP.md)
+- [Tool reference](docs/TOOLS.md)
+- [AI usage guide](docs/AI_README.md)
 
 ## Safety
 
-The `execute_python` and expression-evaluation tools are intended for trusted local workflows. Do not expose the Blender addon socket to a public network.
+The `execute_python` and expression-evaluation tools are for trusted local workflows only. Do not expose the Blender addon socket to a public network.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
