@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blender-ai-mcp"
+version = "1.0.0"
+description = "Model Context Protocol server and Blender addon for AI-driven 3D modeling workflows."
+readme = "docs/README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "blender-ai-mcp" }]
+keywords = ["mcp", "blender", "3d", "bpy", "ai"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: End Users/Desktop",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Multimedia :: Graphics :: 3D Modeling",
+]
+dependencies = [
+  "mcp==1.9.4",
+  "pydantic==2.11.7",
+  "typing-extensions==4.14.0",
+  "imageio>=2.30.0",
+  "Pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.4.0",
+  "pytest-asyncio==1.0.0",
+  "pytest-cov==6.2.1",
+  "ruff==0.11.13",
+]
+
+[project.scripts]
+blender-ai-mcp = "server.main:main"
+
+[tool.setuptools]
+packages = [
+  "server",
+  "server.tools",
+  "server.utils",
+  "blender_addon",
+  "blender_ai_mcp",
+  "blender_ai_mcp.server",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ANN", "ASYNC"]
+ignore = ["ANN401"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--cov=server --cov-report=term-missing"

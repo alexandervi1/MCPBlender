@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "blender": {
+      "command": "python",
+      "args": ["-m", "blender_ai_mcp.server.main"],
+      "env": {
+        "BLENDER_MCP_PORT": "9876",
+        "BLENDER_MCP_HOST": "localhost"
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.python-version
+
+# Virtual environments
+.venv/
+.uv-verify-venv/
+.uv-cache/
+venv/
+env/
+ENV/
+
+# Test, coverage, lint, and type-check caches
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+
+# Packaging and build output
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Generated local artifacts
+ai_mcp_bridge.zip
+all_registered_tools.json
+tools_summary.json
+*.blend1
+*.blend2
+
+# Logs and local config
+*.log
+.env
+.env.*
+!.env.example
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
